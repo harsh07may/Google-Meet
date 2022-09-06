@@ -115,6 +115,7 @@ async function listEvents(auth) {
 app.get('/events', async (req, res) => {
     try {
       const auth = await authorize();
+      window.close();
       const events = await listEvents(auth);
       console.log(events);
       res.json({
