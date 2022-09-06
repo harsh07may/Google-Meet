@@ -17,7 +17,7 @@ app.use(cors({
 }))
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -104,18 +104,57 @@ async function listEvents(auth) {
   return events;
 }
 
-// async function showdata(){
-//   const auth = await authorize();
-//       const events = await listEvents(auth);
-//       console.log(events);
-// }
-// showdata();
+var event = {
+  'summary': 'Event',
+  'location': '',
+  'description': 'Test Event',
+  'start': {
+    'dateTime': '2022-09-07T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles',
+  },
+  'end': {
+    'dateTime': '2022-09-07T17:00:00-10:00',
+    'timeZone': 'America/Los_Angeles',
+  },
+  conferenceData: {
+    createRequest: {
+      requestId: '123456790',
+      conferenceSolutionKey: {
+        type: 'hangoutsMeet',
+      },
+      status: {
+        statusCode: 'success'
+      }
+    },
+  }
+};
 
+async function addEvents(auth) {
+  const calendar = await google.calendar({version: 'v3', auth});
+  const res = calendar.events.insert({
+    auth: auth,
+    calendarId: 'primary',
+    "conferenceDataVersion": 1,
+    resource: event,
+  }, function(err) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+
+    console.log('Event created!');
+  });
+}
+async function Eventer(){
+  const auth = await authorize();
+  const events = await addEvents(auth);
+  console.log(events);
+}
+// Eventer();
 
 app.get('/events', async (req, res) => {
     try {
       const auth = await authorize();
-      window.close();
       const events = await listEvents(auth);
       console.log(events);
       res.json({
@@ -129,5 +168,5 @@ app.get('/events', async (req, res) => {
       });
     }
   });
-  const port = 8080;
+  const port = 3000;
   app.listen(port, () => console.log('Hello World'));
