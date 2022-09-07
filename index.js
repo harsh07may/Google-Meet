@@ -109,11 +109,11 @@ var event = {
   'location': '',
   'description': 'Test Event',
   'start': {
-    'dateTime': '2022-09-07T09:00:00-07:00',
+    'dateTime': '2022-09-08T09:00:00-07:00',
     'timeZone': 'America/Los_Angeles',
   },
   'end': {
-    'dateTime': '2022-09-07T17:00:00-10:00',
+    'dateTime': '2022-09-08T17:00:00-10:00',
     'timeZone': 'America/Los_Angeles',
   },
   conferenceData: {
@@ -150,7 +150,7 @@ async function Eventer(){
   const events = await addEvents(auth);
   console.log(events);
 }
-// Eventer();
+Eventer();
 
 app.get('/events', async (req, res) => {
     try {
@@ -159,7 +159,7 @@ app.get('/events', async (req, res) => {
       console.log(events);
       res.json({
         status: 'success',
-        result: events[0].hangoutLink
+        result: events
       });
     } catch (error) {
       res.status(400).json({
