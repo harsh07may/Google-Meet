@@ -150,13 +150,49 @@ async function Eventer(){
   const events = await addEvents(auth);
   console.log(events);
 }
-Eventer();
+// Eventer();
+
+
+app.post('/login',(req, res) => {
+  var user_name = req.body.user;
+  var password = req.body.password;
+
+  var event = {
+    'summary': 'Event',
+    'location': '',
+    'description': 'Test Event',
+    'start': {
+      'dateTime': '2022-09-08T09:00:00-07:00',
+      'timeZone': 'America/Los_Angeles',
+    },
+    'end': {
+      'dateTime': '2022-09-08T17:00:00-10:00',
+      'timeZone': 'America/Los_Angeles',
+    },
+    conferenceData: {
+      createRequest: {
+        requestId: '123456790',
+        conferenceSolutionKey: {
+          type: 'hangoutsMeet',
+        },
+        status: {
+          statusCode: 'success'
+        }
+      },
+    }
+  };
+
+  console.log('');
+  res.end("yes");
+  });
+
 
 app.get('/events', async (req, res) => {
     try {
       const auth = await authorize();
       const events = await listEvents(auth);
-      console.log(events);
+      console.log(auth);
+      // console.log(events);
       res.json({
         status: 'success',
         result: events
